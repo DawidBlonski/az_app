@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+    {% block head %}
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <title>{% block title %}{% endblock %} - My Webpage</title>
+    {% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-dark bg-primary">
+    <a href="{{url_for('index')}}" class="btn btn-success" >Home</a>
+    <a href="{{url_for('about')}}" class="btn btn-success" >ABOUT ME</a>
+    <a href="{{url_for('gallery')}}" class="btn btn-danger" >GALLERY</a>
+    <a href="{{url_for('contact')}}" class="btn btn-warning" >CONTACT</a>
+</nav>
+<div id="content">{% block content %}{% endblock %}</div>
+
+</body>
+</html>
