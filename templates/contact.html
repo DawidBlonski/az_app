@@ -1,20 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form>
+    {{ name }}
+    <form action="{{ url_for('contact') }}" method="POST">
         <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <label for="subject">Subject</label>
+            <input type="subject" class="form-control" id="subject" placeholder="Enter subject" name="subject">
         </div>
         <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            <label for="messange ">Message</label>
+            <input type="messange " class="form-control" id="messange " placeholder="Enter messange " name="messange">
         </div>
-        <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        <div class="form-group">
+            <label for="seder">Sender</label>
+            <input type="email" class="form-control" id="seder " placeholder="Enter seder " name ="sender">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+
+        <div class="form-group">
+            <label for="recipients ">Rec</label>
+            <input type="email" class="form-control" id="recipients " placeholder="Enter recipients" name="recipients">
+        </div>
+        <button class="button is-block is-info is-large is-fullwidth">Sent</button>
     </form>
 {% endblock %}
