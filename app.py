@@ -11,7 +11,6 @@ load_dotenv()
 app = Flask(__name__)
 app.debug = True
 app.secret_key = secrets.token_hex(16)
-os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
