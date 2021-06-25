@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <hr>
+    <form method=post action={{ url_for('guestbook') }}>
+        <input type=hidden name=fields value="Name,Email,Comments">
+        Name: <input type=text name=Name><br>
+        Comments: <br><textarea name=Comments rows=5 cols=60>
+</textarea><br>
+        <input type=submit value="Submit">
+    </form>
+    <hr noshade>
+    {% for result in data %}
+        <p>{{result.name }} napisał {{result.comment }}  dnia {{ result.date}}</p>
+    {% else %}
+        <p>Brak wpisów </p>
+    {% endfor %}
+    <hr noshade>
+{% endblock %}
+
+</html>

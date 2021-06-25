@@ -13,9 +13,13 @@
 <body>
 <nav class="navbar navbar-dark bg-primary">
     <a href="{{url_for('index')}}" class="btn btn-success" >Home</a>
+    <a href="{{url_for('github_login')}}" class="btn btn-success" >LOGIN GITHUB</a>
+
     <a href="{{url_for('about')}}" class="btn btn-success" >ABOUT ME</a>
     <a href="{{url_for('gallery')}}" class="btn btn-danger" >GALLERY</a>
     <a href="{{url_for('contact')}}" class="btn btn-warning" >CONTACT</a>
+    <a href="{{url_for('guestbook')}}" class="btn btn-warning" >guestbook</a>
+
 </nav>
 <div id="content">{% block content %}{% endblock %}</div>
 

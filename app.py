@@ -1,23 +1,31 @@
 import os
 
 from dotenv import load_dotenv
-from flask import Flask, redirect, render_template, request
+from flask import Flask, render_template, request,redirect,url_for
+from flask_dance.contrib.github import make_github_blueprint, github
+import secrets
 from flask_mail import Mail, Message
-
+from database import AzureDB
 load_dotenv()
 
 app = Flask(__name__)
-
+app.debug = True
+app.secret_key = secrets.token_hex(16)
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
-
+github_blueprint = make_github_blueprint(
+    client_id=f"{os.getenv('CLIENT_ID')}",
+    client_secret=f"{os.getenv('CLIENT_SECRET')}",
+)
 app.config["MAIL_SERVER"] = os.getenv("MAIL_SERVER")
 app.config["MAIL_PORT"] = int(os.getenv("MAIL_PORT"))
 app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
 app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")
 app.config["MAIL_USE_TLS"] = bool(int(os.getenv("MAIL_USE_TLS")))
 app.config["MAIL_USE_SSL"] = bool(int(os.getenv("MAIL_USE_SSL")))
+app.register_blueprint(github_blueprint, url_prefix='/login')
 
 mail = Mail(app)
 
@@ -53,3 +61,29 @@ def contact():
             render_template("contact.html", status=f"Please fill out the form")
 
     return render_template("contact.html")
+
+
+@app.route('/guestbook',methods=['GET','POST'])
+def guestbook():
+    with AzureDB() as db:
+        if request.method == 'POST':
+            name = request.form.get('Name')
+            comment = request.form.get('Comment')
+            db.azureAddData(name,comment)
+        data = db.azureGetData()
+        return render_template("guestbook.html",data=data)
+
+@app.route('/login')
+def github_login():
+    if not github.authorized:
+        return redirect(url_for('github.login'))
+    else:
+        account_info = github.get('/user')
+    if account_info.ok:
+        account_info_json = account_info.json()
+        return '<h1>Your Github name is {}'.format(account_info_json['login'])
+
+    return '<h1>Request failed!</h1>'
+if __name__ == '__main__':
+    app.debug = True
+    app.run()
