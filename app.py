@@ -11,6 +11,7 @@ load_dotenv()
 app = Flask(__name__)
 app.debug = True
 app.secret_key = secrets.token_hex(16)
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
@@ -75,12 +76,11 @@ def guestbook():
 @app.route('/login')
 def github_login():
     if not github.authorized:
-        return redirect(url_for('github.login'))
+        return redirect(url_for('github_login'))
     else:
         account_info = github.get('/user')
     if account_info.ok:
-        account_info_json = account_info.json()
-        return '<h1>Your Github name is {}'.format(account_info_json['login'])
+        return redirect(url_for('guestbook'))
 
     return '<h1>Request failed!</h1>'
 if __name__ == '__main__':
