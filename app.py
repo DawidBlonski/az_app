@@ -67,7 +67,7 @@ def guestbook():
     with AzureDB() as db:
         if request.method == 'POST':
             name = request.form.get('Name')
-            comment = request.form.get('Comment')
+            comment = request.form.get('Comments')
             db.azureAddData(name,comment)
         data = db.azureGetData()
         return render_template("guestbook.html",data=data)
